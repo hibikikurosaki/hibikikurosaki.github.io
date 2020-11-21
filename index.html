@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>四択！！英単語クイズ</title>
+    <style>
+      #Q{
+        width: 200px;
+        height: 80px;
+
+        border: 5px solid blueviolet;
+      }
+
+      #pl li{
+        list-style: none;
+      }
+
+      #ans{
+        margin-left: -100px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="Q"></div>
+
+    <input type="button" id="stbtn" value="Start">
+<!--↑ここを押したときにプログラムが動くようにしたい-->
+    <ul id="pl">
+
+      <li id="A1"></li>
+      <li id="A2"></li>
+      <li id="A3"></li>
+      <li id="A4"></li>
+    </ul>
+
+    <input type="number" min="1" max="4" value="1" placeholder="1~4まで" id="Number">
+
+    <input type="button" id="go" value="Go">
+
+    <div id="ans"></div>
+
+    <div id="yans"></div>
+
+    <script>
+
+      //idを取得するところ
+      const stbtn=document.getElementById('stbtn');
+      const QD=document.getElementById('Q');
+      const tl=document.getElementById('pl');
+      const go=document.getElementById('go');
+      const number=document.getElementById('Number');
+      const qan=document.getElementById('ans');
+      const yn=document.getElementById('yans');
+      const a1=document.getElementById('A1');
+      const a2=document.getElementById('A2');
+      const a3=document.getElementById('A3');
+      const a4=document.getElementById('A4');
+
+
+//だから
+
+stbtn.onclick=function Start(){
+
+  //console.log("OK");//これで確かめよう
+
+  //配列を作っていく
+
+  var Eword=['accident','pain','ill','die','remind','inform','convince','warn','suspect','contract','innocent','justice','legal','prison','expose','emerge','reveal','imply','arise','generate','appetite','diet','hunger','ripe','thirst','apply','application','invent','develop','advance','minute','moment','rapid','brief','due','current','instantly','repeat','whisper','pronounce','excuse'];//コピペします
+//↑英単語の配列
+  var Jword=['事故','痛み','病気で','死ぬ','に思い出させる','に知らせる','に納得させる','に警告する','を疑う','契約','無実の','公正、正義','合法的な','刑務所','をさらす、暴露する','現れる、明らかになる','を明らかにする、を暴露する','を示唆する、をほのめかす','生まれる、発生する：起こる','を生む出す、を発生させる、を起こす','食欲、欲望、欲求','規定食、食事制限、日常の食事、国会','飢え、空腹、切望','熟した、円熟した','のどの渇き、切望','を応用する','応用、適用、申し込み、出願、アプリケーション','を発明する、をでっちあげる','を発達させる：発達する、を開発する','進歩、前進、進歩する、前進する、を進める、を深める','分、少しの間','少しの間','速い、急速な','短時間の、簡潔な、要約','到着する予定で、当然の：正当な','現在の、流行の、流れ、風潮、電流','すぐに、即座に','繰り返す、繰り返して言う','ささやく、ひそひそと話す、ささやき、うわさ','発音する','を許す、を多めに見る、言い訳をする、弁解、言い訳'];//答えの日本語の配列
+
+
+
+  //さっきの配列から乱数を使って一つだけ英単語を出します。
+
+  var QEword=Math.floor(Math.random()*Eword.length);
+
+  //さっそく出した問題をはりつけよう
+
+  QD.innerHTML=Eword[QEword];//番号になってしまうので配列の単語を出したいときはこう書く
+
+  console.log(Eword[QEword]);
+
+  var ssup2=new SpeechSynthesisUtterance();
+                       
+    ssup2.text=Eword[QEword];
+    
+    ssup2.lang='en-EN';
+    
+    speechSynthesis.speak(ssup2);//先に問題の読み上げを作った
+
+
+  //今回は回答の選択肢3つを乱数で作る処理をしていきます
+
+  //まずはさっき出た問題の英単語の答え、日本語を日本語の配列内から取得
+
+  var Aword=Jword[QEword];//英単語の配列の番号をそのまま使う
+    console.log(Aword);//答え
+
+  //ulにランダムに埋め込む
+
+    var num=['1','2','3','4'];
+
+      var NR=Math.floor(Math.random()*num.length);
+
+        console.log(num[NR]);
+
+        qan.innerHTML=num[NR];//答え合わせに使います。
+
+
+        switch(num[NR]){
+
+          case '1':
+            a1.innerHTML='1.'+Aword;
+          break;
+          case '2':
+            a2.innerHTML='2.'+Aword;
+          break;
+          case '3':
+            a3.innerHTML='3.'+Aword;
+          break;
+          case '4':
+            a4.innerHTML='4.'+Aword;
+          break;
+          //あとは他のをランダムに入れるだけ
+        }
+
+        console.log(Jword);
+    Jword.splice(QEword,1);//答えと同じ選択肢が出るのを防ぐためにさっき出たのを配列から消す
+        console.log(Jword);//一つ減ってるはず
+
+        num.splice(NR,1);
+          console.log(num);//数字も同様
+          //これをあと3回くらい繰り返す。
+
+    var Aword1=Math.floor(Math.random()*Jword.length);
+        console.log(Jword[Aword1]);//ダミー１
+
+    var NR2=Math.floor(Math.random()*num.length);
+
+        console.log(num[NR2]);
+
+      switch(num[NR2]){
+          case '1':
+            a1.innerHTML='1.'+Jword[Aword1];
+          break;
+          case '2':
+            a2.innerHTML='2.'+Jword[Aword1];
+          break;
+          case '3':
+            a3.innerHTML='3.'+Jword[Aword1];
+          break;
+          case '4':
+            a4.innerHTML='4.'+Jword[Aword1];
+          break;
+      }
+
+      Jword.splice(Aword1,1);
+        console.log(Jword);
+      num.splice(NR2,1);
+        console.log(num);
+
+    var Aword2=Math.floor(Math.random()*Jword.length);
+      console.log(Jword[Aword2]);//ダミー２
+
+    var NR3=Math.floor(Math.random()*num.length);
+      console.log(num[NR3]);
+
+      switch(num[NR3]){
+          case '1':
+            a1.innerHTML='1.'+Jword[Aword2];
+          break;
+          case '2':
+            a2.innerHTML='2.'+Jword[Aword2];
+          break;
+          case '3':
+            a3.innerHTML='3.'+Jword[Aword2];
+          break;
+          case '4':
+            a4.innerHTML='4.'+Jword[Aword2];
+          break;
+      }
+
+
+      Jword.splice(Aword2,1);
+        console.log(Jword);
+      num.splice(NR3,1);
+        console.log(num[NR3]);
+
+
+    var Aword3=Math.floor(Math.random()* Jword.length);
+      console.log(Jword[Aword3]);//ダミー3
+    var NR4=Math.floor(Math.random()* num.length);
+      console.log(num[NR4]);
+
+     switch(num[NR4]){
+          case '1':
+            a1.innerHTML='1.'+Jword[Aword3];
+          break;
+          case '2':
+            a2.innerHTML='2.'+Jword[Aword3];
+          break;
+          case '3':
+            a3.innerHTML='3.'+Jword[Aword3];
+          break;
+          case '4':
+            a4.innerHTML='4.'+Jword[Aword3];
+          break;
+      }       
+
+//これで問題設置完了！！
+//長かった...
+
+//答え合わせ
+go.onclick=function Go(){
+
+  var an=number.value;
+    console.log(an);
+
+  var qan2=qan.textContent;
+    console.log(qan2);
+
+  if(qan2==""){
+    console.log("始まっていない")
+  }else{
+    if(an==qan2){
+      switch(qan2){
+        case 1:
+          var aaa=a1.innerText;
+        break;
+        case 2:
+          var aaa=a2.innerText;
+        break;
+        case 3:
+          var aaa=a3.innerText;
+        break;
+        case 4:
+          var aaa=a4.innerText;
+        break;
+      }
+
+      console.log(aaa);
+      yn.innerHTML="正解！！解答　"+qan2;
+
+
+  }else{
+    yn.innerHTML="不正解！！　解答　"+qan2;
+  }
+
+}
+
+}
+}
+    </script>
+  </body>
+</html>
